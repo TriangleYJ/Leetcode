@@ -1,6 +1,10 @@
-// O(n) solution?
-// 주어진 데이터가 정렬되있기 때문에 양 끝의 제곱 중 더 큰것을 새로운 output의 뒤쪽부터 채워 넣는다.
+/*
+ * @lc app=leetcode id=977 lang=cpp
+ *
+ * [977] Squares of a Sorted Array
+ */
 
+// @lc code=start
 class Solution {
 public:
     vector<int> sortedSquares(vector<int>& nums) {
@@ -14,3 +18,5 @@ public:
         
     }
 };
+// @lc code=end
+

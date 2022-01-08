@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode id=278 lang=cpp
+ *
+ * [278] First Bad Version
+ */
+
+// @lc code=start
 // The API isBadVersion is defined for you.
 // bool isBadVersion(int version);
 
@@ -19,3 +26,5 @@ public:
         else return -1; // x o (No case)
     }
 };
+// @lc code=end
+

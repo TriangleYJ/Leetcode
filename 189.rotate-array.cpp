@@ -1,6 +1,10 @@
-// in-place solution?
-// 뒤에서 n번째까지의 list를 reverse, 그에 해당하지 않는 나머지 리스트 reverse, 전체 reverse 를 하면 됨
+/*
+ * @lc app=leetcode id=189 lang=cpp
+ *
+ * [189] Rotate Array
+ */
 
+// @lc code=start
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
@@ -15,3 +19,5 @@ public:
         nums = ret;
     }
 };
+// @lc code=end
+
