@@ -9,22 +9,22 @@ class Solution {
 public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> result;
-        vector<int> tmp(nums.size());
-        int cnt[7] = {0};
-        permuteCnt(nums, result, tmp, cnt, 0);
+        vector<int> builder(nums.size());
+        int number_map[7] = {0};
+        permuteStep(nums, result, builder, number_map, 0);
 
         return result;
     }
 
-    void permuteCnt(vector<int>& nums, vector<vector<int>>& result, vector<int>& tmp, int occ[7], int cnt){
-        if(cnt == nums.size()) result.push_back(tmp);
+    void permuteStep(vector<int>& nums, vector<vector<int>>& result, vector<int>& builder, int n_map[7], int step){
+        if(step == nums.size()) result.push_back(builder);
         for (int i = 0; i < nums.size(); i++)
         {
-            if(occ[i]) continue;
-            occ[i] = 1;
-            tmp.at(cnt) = nums[i];
-            permuteCnt(nums, result, tmp, occ, cnt+1);
-            occ[i] = 0;
+            if(n_map[i]) continue;
+            n_map[i] = 1;
+            builder.at(step) = nums[i];
+            permuteStep(nums, result, builder, n_map, step+1);
+            n_map[i] = 0;
         }
     }
 
