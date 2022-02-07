@@ -8,44 +8,21 @@
 class Solution {
    public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        int sl = s.length(), wl = wordDict.size();
-        int main_p = 0;
-        int word_p = 0;
+        // "aaa aaa aaa" ["aaaaa", "aaa"]
+        return wordBreakWithStart(s, 0, wordDict);
+    }
 
-        bool wordCandidate[1001] = {true};
-        for (int i = 0; i < 1001; i++)
-            wordCandidate[i] = true;
-        while (main_p < sl) {
-            char cur_c = s.at(main_p);
-            bool candExist = false;
-            bool endCond = false;
-            for (int i = 0; i < wl; i++) {
-                if (wordCandidate[i]) {
-                    if (wordDict.at(i).at(word_p) != cur_c)
-                        wordCandidate[i] = false;
-                    else {  
-                        candExist = true;
-                        // fully matched word exists
-                         if (word_p == wordDict.at(i).length() - 1){
-                            endCond = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if(endCond){
-                cout << cur_c << endl;
-                for (int i = 0; i < 1001; i++)
-                    wordCandidate[i] = true;
-                word_p = 0;
-            } else {    
-                if (!candExist) return false;
-                word_p++;
-            }
-            main_p++;
+    bool wordBreakWithStart(string s, int start, vector<string>& wordDict) {
+        int sl = s.length();
+        
+        if (start == sl) return true;
+        for (string word : wordDict) {
+            int p = 0;
+            int ws = word.length();
+            while (p < ws && p + start < sl && word.at(p) == s.at(p + start)) p++;
+            if (p == ws)
+                if (wordBreakWithStart(s, start + ws, wordDict)) return true;
         }
-        if(word_p == 0) return true;
         return false;
     }
 };
