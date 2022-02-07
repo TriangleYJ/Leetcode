@@ -9,53 +9,36 @@ class Solution {
    private:
     int w;
     int h;
-    int d[5][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {0, 0}};
-    int dc[8][2] = {{0, 4}, {1, 4}, {2, 4}, {3, 4}, {0, 1}, {0, 3}, {1, 2}, {2, 3}};
-    vector<vector<int>> g;
+    int d[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
    public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        h = grid.size(), w = grid.at(0).size(), g = grid;
-        if(g.at(0).at(0) == 1) return -1;
-        g.at(h-1).at(w-1) |= 8;
-        return distanceToBR(0, 0);
-    }
-
-    int distanceToBR(int y, int x) {
-        // _ _ _ _ _ _ _ _
-        // 0. original bit
-        // 1. lock bit
-        // 2. distance = -1
-        // 3~. distance > 0
-        int val = g.at(y).at(x);
-        if(val & 4) return -1;
-        if(val >> 3) return val >> 3;
+        h = grid.size(), w = grid.at(0).size();
+        queue<vector<int>> q;
+        if(grid.at(0).at(0) == 1) return -1;
+        grid.at(0).at(0) |= 2;
+        q.push({0, 0});
         
-        int dist = 300;
-        int c[5] = {x + 1 < w, y + 1 < h, x - 1 > 0, y - 1 > 0, 1};
-        if(!c[0] && !c[1]) return 1; // end
-        g.at(y).at(x) |= 2; // lock
-
-        for (int i = 0; i < 8; i++) {
-            int dc1 = dc[i][0], dc2 = dc[i][1];
-            if(c[dc1] && c[dc2]){
-                int dx = x + d[dc1][0] + d[dc2][0], dy = y + d[dc1][1] + d[dc2][1];
-                if(g.at(dy).at(dx) & 2) continue;
-                int n_d = distanceToBR(dy, dx);
-                printf("%d %d %d\n", dx, dy, n_d);
-                if(n_d == -1) continue;
-                if ((g.at(dy).at(dx) & 1) == 0) dist = min(dist, n_d + 1);
+        while(!q.empty()){
+            int x = q.front().at(0), y = q.front().at(1);
+            int dist = grid.at(y).at(x) >> 1;
+            if(y == h - 1 && x == w - 1) return dist;
+            q.pop();
+            for (int i = 0; i < 8; i++)
+            {
+                int dx = x + d[i][0], dy = y + d[i][1];
+                if(0 <= dx && dx < w && 0 <= dy && dy < h){
+                    int dval = grid.at(dy).at(dx);
+                    int ddist = dval >> 1;
+                    if((dval & 1) == 0 && ddist == 0){
+                        grid.at(dy).at(dx) |= ((dist + 1) << 1);
+                        q.push({dx, dy});
+                    }
+                }
             }
         }
-        g.at(y).at(x) ^= 2; // unlock
 
-        if(dist == 300){
-            g.at(y).at(x) |= 4;
-            return -1;
-        }
-
-        g.at(y).at(x) |= (dist << 3);
-        return dist;
+        return -1;
     }
 };
 // @lc code=end
