@@ -9,31 +9,34 @@ class Solution {
    public:
     int numberOfArithmeticSlices(vector<int>& nums) {
         int s = nums.size();
-        if (s < 3) return 0;
-        vector<int> dp(s - 2, 0);
         int cnt = 0;
-        for (int i = 0; i < s - 2; i++) {
-            int a = nums.at(i);
-            int b = nums.at(i + 1);
-            int c = nums.at(i + 2);
-            if (a + c == 2 * b) {
-                dp.at(i) = 1;  // dp.at(i).at(i + 2) = 1;
-                cnt++;
-            }
-        }
-
-        for (int k = 3; k < s; k++) {
-            for (int i = 0; i < s - k; i++) {
-                int d1 = dp.at(i);      // dp.at(i).at(i + k - 1);
-                int d2 = dp.at(i + 1);  // dp.at(i + 1).at(i + k);
-                if (d1 && d2) {
-                    dp.at(i) = 1;  // dp.at(i).at(i + k) = 1;
+        if (s < 3) return 0;
+        int srt = 0;
+        int end = 2;
+        int d = 0;
+        while (end < s) {
+            if (end - srt == 2) {
+                int a = nums.at(srt);
+                int b = nums.at(srt + 1);
+                int c = nums.at(end);
+                if (a + c == 2 * b) {
+                    d = (b - a);
                     cnt++;
+                    end++;
+                } else {
+                    srt++;
+                    end++;
+                }
+            } else if (end - srt > 2) {
+                int prev = nums.at(end - 1);
+                int cur = nums.at(end);
+                if (cur - prev == d) {
+                    cnt += (end - srt - 1);
+                    end++;
                 } else
-                    dp.at(i) = 0;
+                    srt = end - 2;
             }
         }
-
         return cnt;
     }
 };
